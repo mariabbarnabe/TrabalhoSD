@@ -3,9 +3,11 @@ package br.ol.pacman.actor;
 import br.ol.pacman.PacmanActor;
 import br.ol.pacman.PacmanGame;
 import br.ol.pacman.PacmanGame.State;
+import br.ol.pacman.infra.Keyboard;
 import br.ol.pacman.infra.ShortestPathFinder;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,13 +139,73 @@ public class Ghost extends PacmanActor {
     
     @Override
     public void updatePlaying() {
-        switch (mode) {
+      /*  switch (mode) {
             case CAGE: updateGhostCage(); break;
             case NORMAL: updateGhostNormal(); break;
             case VULNERABLE: updateGhostVulnerable(); break;
             case DIED: updateGhostDied(); break;
         }
+*/
+       if (!visible) {
+            return;
+        }
+        
+        if (Keyboard.keyPressed[KeyEvent.VK_A]) {
+            desiredDirection = 2;
+        }
+        else if (Keyboard.keyPressed[KeyEvent.VK_D]) {
+            desiredDirection = 0;
+        }
+        else if (Keyboard.keyPressed[KeyEvent.VK_W]) {
+            desiredDirection = 3;
+        }
+        else if (Keyboard.keyPressed[KeyEvent.VK_S]) {
+            desiredDirection = 1;
+        }
+        
+        yield:
+        while (true) {
+            switch (instructionPointer) {
+                case 0:
+                    double angle = Math.toRadians(desiredDirection * 90);
+                    dx = (int) Math.cos(angle);
+                    dy = (int) Math.sin(angle);
+                    if (game.maze[row + dy][col + dx] == 0) {
+                        direction = desiredDirection;
+                    } 
+                    
+                    angle = Math.toRadians(direction * 90);
+                    dx = (int) Math.cos(angle);
+                    dy = (int) Math.sin(angle);
+                    if (game.maze[row + dy][col + dx] == -1) {
+                        break yield;
+                    } 
+                    
+                    col += dx;
+                    row += dy;
+                    instructionPointer = 1;
+                case 1:
+                    int targetX = col * 8 - 4 - 32;
+                    int targetY = (row + 3) * 8 - 4;
+                    int difX = (targetX - (int) x);
+                    int difY = (targetY - (int) y);
+                    x += difX == 0 ? 0 : difX > 0 ? 1 : -1;
+                    y += difY == 0 ? 0 : difY > 0 ? 1 : -1;
+                    if (difX == 0 && difY == 0) {
+                        instructionPointer = 0;
+                        if (col == 1) {
+                            col = 34;
+                            x = col * 8 - 4 - 24;
+                        }
+                        else if (col == 34) {
+                            col = 1;
+                            x = col * 8 - 4 - 24;
+                        }
+                    }
+                    break yield;
+            }
         updateAnimation();
+    }
     }
 
     public void updateAnimation() {
