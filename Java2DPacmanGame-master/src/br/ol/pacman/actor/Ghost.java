@@ -139,73 +139,13 @@ public class Ghost extends PacmanActor {
     
     @Override
     public void updatePlaying() {
-      /*  switch (mode) {
+        switch (mode) {
             case CAGE: updateGhostCage(); break;
             case NORMAL: updateGhostNormal(); break;
             case VULNERABLE: updateGhostVulnerable(); break;
             case DIED: updateGhostDied(); break;
         }
-*/
-       if (!visible) {
-            return;
-        }
-        
-        if (Keyboard.keyPressed[KeyEvent.VK_A]) {
-            desiredDirection = 2;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_D]) {
-            desiredDirection = 0;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_W]) {
-            desiredDirection = 3;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_S]) {
-            desiredDirection = 1;
-        }
-        
-        yield:
-        while (true) {
-            switch (instructionPointer) {
-                case 0:
-                    double angle = Math.toRadians(desiredDirection * 90);
-                    dx = (int) Math.cos(angle);
-                    dy = (int) Math.sin(angle);
-                    if (game.maze[row + dy][col + dx] == 0) {
-                        direction = desiredDirection;
-                    } 
-                    
-                    angle = Math.toRadians(direction * 90);
-                    dx = (int) Math.cos(angle);
-                    dy = (int) Math.sin(angle);
-                    if (game.maze[row + dy][col + dx] == -1) {
-                        break yield;
-                    } 
-                    
-                    col += dx;
-                    row += dy;
-                    instructionPointer = 1;
-                case 1:
-                    int targetX = col * 8 - 4 - 32;
-                    int targetY = (row + 3) * 8 - 4;
-                    int difX = (targetX - (int) x);
-                    int difY = (targetY - (int) y);
-                    x += difX == 0 ? 0 : difX > 0 ? 1 : -1;
-                    y += difY == 0 ? 0 : difY > 0 ? 1 : -1;
-                    if (difX == 0 && difY == 0) {
-                        instructionPointer = 0;
-                        if (col == 1) {
-                            col = 34;
-                            x = col * 8 - 4 - 24;
-                        }
-                        else if (col == 34) {
-                            col = 1;
-                            x = col * 8 - 4 - 24;
-                        }
-                    }
-                    break yield;
-            }
         updateAnimation();
-    }
     }
 
     public void updateAnimation() {
@@ -342,10 +282,10 @@ public class Ghost extends PacmanActor {
 //        }
         
         if (type == 0 || type == 1) {
-            updateGhostMovement(true, pacman.col, pacman.row, 1, pacmanCatchedAction, 0, 1, 2, 3); // chase movement
+            updateGhostMovement(/*true, pacman.col, pacman.row, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // chase movement
         }
         else {
-            updateGhostMovement(false, 0, 0, 1, pacmanCatchedAction, 0, 1, 2, 3); // random movement
+            updateGhostMovement(/*false, 0, 0, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // random movement
         }
     }
     
@@ -363,7 +303,7 @@ public class Ghost extends PacmanActor {
             markAsVulnerable = false;
         }
         
-        updateGhostMovement(true, pacman.col, pacman.row, 1, ghostCatchedAction, 2, 3, 0, 1); // run away movement
+        updateGhostMovement(/*true, pacman.col, pacman.row, 1, ghostCatchedAction, 2, 3, 0, 1*/); // run away movement
         // return to normal mode after 8 seconds
         if (!checkVulnerableModeTime()) {
             setMode(Mode.NORMAL);
@@ -420,9 +360,75 @@ public class Ghost extends PacmanActor {
         }
     }    
     
-    private void updateGhostMovement(boolean useTarget, int targetCol, int targetRow
-            , int velocity, Runnable collisionWithPacmanAction, int ... desiredDirectionsMap) {
+    private void updateGhostMovement(/*boolean useTarget, int targetCol, int targetRow
+            , int velocity, Runnable collisionWithPacmanAction, int ... desiredDirectionsMap*/) {
         
+         if (!visible) {
+            return;
+        }
+        
+        if (Keyboard.keyPressed[KeyEvent.VK_A]) {
+            desiredDirection = 2;
+        }
+        else if (Keyboard.keyPressed[KeyEvent.VK_D]) {
+            desiredDirection = 0;
+        }
+        else if (Keyboard.keyPressed[KeyEvent.VK_W]) {
+            desiredDirection = 3;
+        }
+        else if (Keyboard.keyPressed[KeyEvent.VK_S]) {
+            desiredDirection = 1;
+        }
+        
+        yield:
+        while (true) {
+            switch (instructionPointer) {
+                case 0:
+                    double angle = Math.toRadians(desiredDirection * 90);
+                    dx = (int) Math.cos(angle);
+                    dy = (int) Math.sin(angle);
+                    if (game.maze[row + dy][col + dx] == 0) {
+                        direction = desiredDirection;
+                    } 
+                    
+                    angle = Math.toRadians(direction * 90);
+                    dx = (int) Math.cos(angle);
+                    dy = (int) Math.sin(angle);
+                    if (game.maze[row + dy][col + dx] == -1) {
+                        break yield;
+                    } 
+                    
+                    col += dx;
+                    row += dy;
+                    instructionPointer = 1;
+                case 1:
+                    int targetX = col * 8 - 4 - 32;
+                    int targetY = (row + 3) * 8 - 4;
+                    int difX = (targetX - (int) x);
+                    int difY = (targetY - (int) y);
+                    x += difX == 0 ? 0 : difX > 0 ? 1 : -1;
+                    y += difY == 0 ? 0 : difY > 0 ? 1 : -1;
+                    if (difX == 0 && difY == 0) {
+                        instructionPointer = 0;
+                        if (col == 1) {
+                            col = 34;
+                            x = col * 8 - 4 - 24;
+                        }
+                        else if (col == 34) {
+                            col = 1;
+                            x = col * 8 - 4 - 24;
+                        }
+                    }
+                    if (checkCollisionWithPacman()) {
+                        //collisionWithPacmanAction.run();
+                    }
+                    break yield;
+            }
+        }
+        updateAnimation();
+        
+        
+        /*
         desiredDirections.clear();
         if (useTarget) {
             if (targetCol - col > 0) {
@@ -486,6 +492,7 @@ public class Ghost extends PacmanActor {
                     break yield;
             }
         }        
+        */
     }
 
     @Override
