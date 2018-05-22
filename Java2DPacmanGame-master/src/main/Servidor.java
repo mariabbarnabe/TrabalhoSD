@@ -5,16 +5,22 @@ import br.ol.pacman.infra.Display;
 import br.ol.pacman.infra.Game;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import java.rmi.*;
 
-
-/**
- * Main class.
- * 
- * @author Leonardo Ono (ono.leo@gmail.com)
- */
-public class Main {
-
+public class Servidor {
+    public Servidor() {
+        try {
+            GameServe g = new GameImpl();
+            Naming.rebind("rmi://localhost:1099/PacmanService", g);
+            System.out.println("Conexão realizada com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Trouble: " + e);
+        }
+    }
     public static void main(String[] args) {
+        ///Lembrar de rodar o rmiregistry no caminho classes
+        //Servidor s = new Servidor();
+        
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
