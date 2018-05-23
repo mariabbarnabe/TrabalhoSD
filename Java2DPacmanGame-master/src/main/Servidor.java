@@ -19,7 +19,7 @@ public class Servidor {
     }
     public static void main(String[] args) {
         ///Lembrar de rodar o rmiregistry no caminho classes
-        //Servidor s = new Servidor();
+        ///Servidor s = new Servidor();
         
         SwingUtilities.invokeLater(new Runnable() {
 

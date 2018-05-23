@@ -73,6 +73,7 @@ public class Title extends PacmanActor {
         if (pushSpaceToStartVisible) {
             game.drawText(g, "PUSH SPACE TO START", 37, 170);
         }
+        game.drawText(g, "ADAPTED BY GRUPO DE SD 2018", 5, 225);
         game.drawText(g, "PROGRAMMED BY O.L. 2017", 20, 240);
         game.drawText(g, "ORIGINAL GAME BY NAMCO 1980", 5, 255);
     }

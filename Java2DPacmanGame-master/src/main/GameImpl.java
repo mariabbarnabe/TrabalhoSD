@@ -12,11 +12,16 @@ public class GameImpl extends UnicastRemoteObject  implements GameServe{
         super ();
     }
 
-    
+    @Override
     public void top() throws RemoteException {
       //if (Teclado.keyPressed[KeyEvent.VK_UP]){
           System.out.println("Client apertou  up");
       //}
+    }
+
+    @Override
+    public boolean solicitarConexao(int n) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
