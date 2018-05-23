@@ -282,10 +282,10 @@ public class Ghost extends PacmanActor {
 //        }
         
         if (type == 0 || type == 1) {
-            updateGhostMovement(/*true, pacman.col, pacman.row, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // chase movement
+            updateGhostMovement(pacmanCatchedAction/*true, pacman.col, pacman.row, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // chase movement
         }
         else {
-            updateGhostMovement(/*false, 0, 0, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // random movement
+            updateGhostMovement(pacmanCatchedAction/*false, 0, 0, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // random movement
         }
     }
     
@@ -303,7 +303,7 @@ public class Ghost extends PacmanActor {
             markAsVulnerable = false;
         }
         
-        updateGhostMovement(/*true, pacman.col, pacman.row, 1, ghostCatchedAction, 2, 3, 0, 1*/); // run away movement
+        updateGhostMovement(ghostCatchedAction/*true, pacman.col, pacman.row, 1, ghostCatchedAction, 2, 3, 0, 1*/); // run away movement
         // return to normal mode after 8 seconds
         if (!checkVulnerableModeTime()) {
             setMode(Mode.NORMAL);
@@ -360,7 +360,7 @@ public class Ghost extends PacmanActor {
         }
     }    
     
-    private void updateGhostMovement(/*boolean useTarget, int targetCol, int targetRow
+    private void updateGhostMovement(Runnable collisionWithPacmanAction/*boolean useTarget, int targetCol, int targetRow
             , int velocity, Runnable collisionWithPacmanAction, int ... desiredDirectionsMap*/) {
         
          if (!visible) {
@@ -419,8 +419,8 @@ public class Ghost extends PacmanActor {
                             x = col * 8 - 4 - 24;
                         }
                     }
-                    if (checkCollisionWithPacman()) {
-                        //collisionWithPacmanAction.run();
+                    if (collisionWithPacmanAction != null && checkCollisionWithPacman()) {
+                        collisionWithPacmanAction.run();
                     }
                     break yield;
             }
