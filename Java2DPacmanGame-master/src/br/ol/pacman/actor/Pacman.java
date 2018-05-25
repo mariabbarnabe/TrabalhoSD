@@ -6,14 +6,23 @@ import br.ol.pacman.PacmanGame.State;
 import br.ol.pacman.infra.Keyboard;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import main.Main;
 
 /**
  * Pacman class.
- * 
+ *
  * @author Leonardo Ono (ono.leo@gmail.com)
  */
 public class Pacman extends PacmanActor {
-    
+
     public int col;
     public int row;
     public int desiredDirection;
@@ -22,6 +31,8 @@ public class Pacman extends PacmanActor {
     public int dy;
     public long diedTime;
     
+    
+
     public Pacman(PacmanGame game) {
         super(game);
     }
@@ -29,12 +40,12 @@ public class Pacman extends PacmanActor {
     @Override
     public void init() {
         String[] pacmanFrameNames = new String[30];
-        for (int d=0; d<4; d++) {
-            for (int i=0; i<4; i++) {
+        for (int d = 0; d < 4; d++) {
+            for (int i = 0; i < 4; i++) {
                 pacmanFrameNames[i + 4 * d] = "/res/pacman_" + d + "_" + i + ".png";
             }
         }
-        for (int i=0; i<14; i++) {
+        for (int i = 0; i < 14; i++) {
             pacmanFrameNames[16 + i] = "/res/pacman_died_" + i + ".png";
         }
         loadFrames(pacmanFrameNames);
@@ -49,7 +60,7 @@ public class Pacman extends PacmanActor {
         frame = frames[0];
         direction = desiredDirection = 0;
     }
-    
+
     public void updatePosition() {
         x = col * 8 - 4 - 32 - 4;
         y = (row + 3) * 8 - 4;
@@ -83,7 +94,7 @@ public class Pacman extends PacmanActor {
                 case 2:
                     direction = 0;
                     if (!moveToTargetPosition(250, 200, 1)) {
-                    waitTime = System.currentTimeMillis();
+                        waitTime = System.currentTimeMillis();
                         instructionPointer = 3;
                     }
                     break yield;
@@ -102,26 +113,35 @@ public class Pacman extends PacmanActor {
         }
         updateAnimation();
     }
-    
+
     @Override
     public void updatePlaying() {
+Main m = new Main();
+Main m2 = new Main();
+Main m3 = new Main();
+Main m4 = new Main();
+    
+    String me = m.getMensagem();
+    String me2 = m2.getMensagem2();
+    String me3 = m3.getMensagem3();
+    String me4 = m4.getMensagem4();
+    
         if (!visible) {
             return;
         }
-        
-        if (Keyboard.keyPressed[KeyEvent.VK_LEFT]) {
+
+        if (me!=null) {
             desiredDirection = 2;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_RIGHT]) {
+        } else if (me2!=null) {
             desiredDirection = 0;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_UP]) {
+        } else if (me3!=null) {
             desiredDirection = 3;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_DOWN]) {
+        } else if (me4!=null) {
             desiredDirection = 1;
         }
         
+        
+
         yield:
         while (true) {
             switch (instructionPointer) {
@@ -131,15 +151,15 @@ public class Pacman extends PacmanActor {
                     dy = (int) Math.sin(angle);
                     if (game.maze[row + dy][col + dx] == 0) {
                         direction = desiredDirection;
-                    } 
-                    
+                    }
+
                     angle = Math.toRadians(direction * 90);
                     dx = (int) Math.cos(angle);
                     dy = (int) Math.sin(angle);
                     if (game.maze[row + dy][col + dx] == -1) {
                         break yield;
-                    } 
-                    
+                    }
+
                     col += dx;
                     row += dy;
                     instructionPointer = 1;
@@ -155,8 +175,7 @@ public class Pacman extends PacmanActor {
                         if (col == 1) {
                             col = 34;
                             x = col * 8 - 4 - 24;
-                        }
-                        else if (col == 34) {
+                        } else if (col == 34) {
                             col = 1;
                             x = col * 8 - 4 - 24;
                         }
@@ -169,12 +188,12 @@ public class Pacman extends PacmanActor {
             game.levelCleared();
         }
     }
-    
+
     private void updateAnimation() {
         int frameIndex = 4 * direction + (int) (System.nanoTime() * 0.00000002) % 4;
         frame = frames[frameIndex];
     }
-    
+
     @Override
     public void updatePacmanDied() {
         yield:
@@ -208,14 +227,13 @@ public class Pacman extends PacmanActor {
             }
         }
     }
-    
+
     @Override
     public void updateCollider() {
         collider.setLocation((int) (x + 4), (int) (y + 4));
     }
-    
-    // broadcast messages
 
+    // broadcast messages
     @Override
     public void stateChanged() {
         if (game.getState() == PacmanGame.State.TITLE) {
@@ -223,20 +241,15 @@ public class Pacman extends PacmanActor {
             y = 200;
             instructionPointer = 0;
             visible = true;
-        }
-        else if (game.getState() == State.READY) {
+        } else if (game.getState() == State.READY) {
             visible = false;
-        }
-        else if (game.getState() == State.READY2) {
+        } else if (game.getState() == State.READY2) {
             reset();
-        }
-        else if (game.getState() == State.PLAYING) {
+        } else if (game.getState() == State.PLAYING) {
             instructionPointer = 0;
-        }
-        else if (game.getState() == State.PACMAN_DIED) {
+        } else if (game.getState() == State.PACMAN_DIED) {
             instructionPointer = 0;
-        }
-        else if (game.getState() == State.LEVEL_CLEARED) {
+        } else if (game.getState() == State.LEVEL_CLEARED) {
             frame = frames[0];
         }
     }
@@ -248,5 +261,5 @@ public class Pacman extends PacmanActor {
     public void hideAll() {
         visible = false;
     }
-    
+
 }

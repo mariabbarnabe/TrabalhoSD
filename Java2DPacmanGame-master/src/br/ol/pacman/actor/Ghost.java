@@ -10,42 +10,45 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import main.Main;
 
 /**
  * Ghost class.
- * 
+ *
  * @author Leonardo Ono (ono.leo@gmail.com)
  */
 public class Ghost extends PacmanActor {
-    
+
     public Pacman pacman;
     public int type;
-    public Point[] initialPositions = { 
-        new Point(18, 11), new Point(16, 14), 
+    public Point[] initialPositions = {
+        new Point(18, 11), new Point(16, 14),
         new Point(18, 14), new Point(20, 14)};
     public int cageUpDownCount;
 
-    public static enum Mode { CAGE, NORMAL, VULNERABLE, DIED }
+    public static enum Mode {
+        CAGE, NORMAL, VULNERABLE, DIED
+    }
     public Mode mode = Mode.CAGE;
-    
+
     public int dx;
     public int dy;
     public int col;
     public int row;
-    
+
     public int direction = 0;
     public int lastDirection;
-    
+
     public List<Integer> desiredDirections = new ArrayList<Integer>();
     public int desiredDirection;
-    public static final int[] backwardDirections = { 2, 3, 0, 1 };
-    
+    public static final int[] backwardDirections = {2, 3, 0, 1};
+
     public long vulnerableModeStartTime;
     public boolean markAsVulnerable;
-    
+
     // in this version, i'm using path finder just to return the ghost to the center (cage)
-    public ShortestPathFinder pathFinder; 
-    
+    public ShortestPathFinder pathFinder;
+
     public Ghost(PacmanGame game, Pacman pacman, int type) {
         super(game);
         this.pacman = pacman;
@@ -57,24 +60,24 @@ public class Ghost extends PacmanActor {
         this.mode = mode;
         modeChanged();
     }
-    
+
     @Override
     public void init() {
         String[] ghostFrameNames = new String[8 + 4 + 4];
-        for (int i=0; i<8; i++) {
+        for (int i = 0; i < 8; i++) {
             ghostFrameNames[i] = "/res/ghost_" + type + "_" + i + ".png";
         }
-        for (int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             ghostFrameNames[8 + i] = "/res/ghost_vulnerable_" + i + ".png";
         }
-        for (int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             ghostFrameNames[12 + i] = "/res/ghost_died_" + i + ".png";
         }
         loadFrames(ghostFrameNames);
         collider = new Rectangle(0, 0, 8, 8);
         setMode(Mode.CAGE);
     }
-    
+
     private int getTargetX(int col) {
         return col * 8 - 3 - 32;
     }
@@ -87,13 +90,13 @@ public class Ghost extends PacmanActor {
         x = getTargetX(col);
         y = getTargetY(row);
     }
-    
+
     private void updatePosition(int col, int row) {
         this.col = col;
         this.row = row;
         updatePosition();
     }
-    
+
     private boolean moveToTargetPosition(int targetX, int targetY, int velocity) {
         int sx = (int) (targetX - x);
         int sy = (int) (targetY - y);
@@ -111,18 +114,17 @@ public class Ghost extends PacmanActor {
         int targetY = getTargetY(row);
         return moveToTargetPosition(targetX, targetY, velocity);
     }
-    
+
     private void adjustHorizontalOutsideMovement() {
         if (col == 1) {
             col = 34;
             x = getTargetX(col);
-        }
-        else if (col == 34) {
+        } else if (col == 34) {
             col = 1;
             x = getTargetX(col);
         }
     }
-    
+
     @Override
     public void updateTitle() {
         int frameIndex = 0;
@@ -130,20 +132,27 @@ public class Ghost extends PacmanActor {
         y = 200;
         if (pacman.direction == 0) {
             frameIndex = 8 + (int) (System.nanoTime() * 0.00000001) % 2;
-        }
-        else if (pacman.direction == 2) {
+        } else if (pacman.direction == 2) {
             frameIndex = 2 * pacman.direction + (int) (System.nanoTime() * 0.00000001) % 2;
         }
         frame = frames[frameIndex];
     }
-    
+
     @Override
     public void updatePlaying() {
         switch (mode) {
-            case CAGE: updateGhostCage(); break;
-            case NORMAL: updateGhostNormal(); break;
-            case VULNERABLE: updateGhostVulnerable(); break;
-            case DIED: updateGhostDied(); break;
+            case CAGE:
+                updateGhostCage();
+                break;
+            case NORMAL:
+                updateGhostNormal();
+                break;
+            case VULNERABLE:
+                updateGhostVulnerable();
+                break;
+            case DIED:
+                updateGhostDied();
+                break;
         }
         updateAnimation();
     }
@@ -151,7 +160,7 @@ public class Ghost extends PacmanActor {
     public void updateAnimation() {
         int frameIndex = 0;
         switch (mode) {
-            case CAGE: 
+            case CAGE:
             case NORMAL:
                 frameIndex = 2 * direction + (int) (System.nanoTime() * 0.00000001) % 2;
                 if (!markAsVulnerable) {
@@ -160,8 +169,7 @@ public class Ghost extends PacmanActor {
             case VULNERABLE:
                 if (System.currentTimeMillis() - vulnerableModeStartTime > 5000) {
                     frameIndex = 8 + (int) (System.nanoTime() * 0.00000002) % 4;
-                }
-                else {
+                } else {
                     frameIndex = 8 + (int) (System.nanoTime() * 0.00000001) % 2;
                 }
                 break;
@@ -184,8 +192,7 @@ public class Ghost extends PacmanActor {
                     if (type == 0) {
                         instructionPointer = 6;
                         break;
-                    }
-                    else if (type == 2) {
+                    } else if (type == 2) {
                         instructionPointer = 2;
                         break;
                     }
@@ -247,22 +254,23 @@ public class Ghost extends PacmanActor {
             }
         }
     }
-    
+
     private PacmanCatchedAction pacmanCatchedAction = new PacmanCatchedAction();
-    
+
     private class PacmanCatchedAction implements Runnable {
+
         @Override
         public void run() {
             game.setState(State.PACMAN_DIED);
         }
     }
-    
+
     private void updateGhostNormal() {
         if (checkVulnerableModeTime() && markAsVulnerable) {
             setMode(Mode.VULNERABLE);
             markAsVulnerable = false;
         }
-        
+
         // for debbuging purposes
 //        if (Keyboard.keyPressed[KeyEvent.VK_Q] && type == 0) {
 //            game.currentCatchedGhostScoreTableIndex = 0;
@@ -280,40 +288,39 @@ public class Ghost extends PacmanActor {
 //            game.currentCatchedGhostScoreTableIndex = 0;
 //            game.ghostCatched(Ghost.this);
 //        }
-        
         if (type == 0 || type == 1) {
             updateGhostMovement(pacmanCatchedAction/*true, pacman.col, pacman.row, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // chase movement
-        }
-        else {
+        } else {
             updateGhostMovement(pacmanCatchedAction/*false, 0, 0, 1, pacmanCatchedAction, 0, 1, 2, 3*/); // random movement
         }
     }
-    
+
     private GhostCatchedAction ghostCatchedAction = new GhostCatchedAction();
-    
+
     private class GhostCatchedAction implements Runnable {
+
         @Override
         public void run() {
             game.ghostCatched(Ghost.this);
         }
     }
-    
+
     private void updateGhostVulnerable() {
         if (markAsVulnerable) {
             markAsVulnerable = false;
         }
-        
+
         updateGhostMovement(ghostCatchedAction/*true, pacman.col, pacman.row, 1, ghostCatchedAction, 2, 3, 0, 1*/); // run away movement
         // return to normal mode after 8 seconds
         if (!checkVulnerableModeTime()) {
             setMode(Mode.NORMAL);
         }
     }
-    
+
     private boolean checkVulnerableModeTime() {
         return System.currentTimeMillis() - vulnerableModeStartTime <= 8000;
     }
-    
+
     private void updateGhostDied() {
         yield:
         while (true) {
@@ -341,13 +348,13 @@ public class Ghost extends PacmanActor {
                     }
                     break yield;
                 case 3:
-                    if (!moveToTargetPosition(105, 110, 4)){
+                    if (!moveToTargetPosition(105, 110, 4)) {
                         instructionPointer = 4;
                         continue yield;
                     }
                     break yield;
                 case 4:
-                    if (!moveToTargetPosition(105, 134, 4)){
+                    if (!moveToTargetPosition(105, 134, 4)) {
                         instructionPointer = 5;
                         continue yield;
                     }
@@ -358,28 +365,34 @@ public class Ghost extends PacmanActor {
                     break yield;
             }
         }
-    }    
-    
+    }
+
     private void updateGhostMovement(Runnable collisionWithPacmanAction/*boolean useTarget, int targetCol, int targetRow
             , int velocity, Runnable collisionWithPacmanAction, int ... desiredDirectionsMap*/) {
+        Main m = new Main();
+        Main m2 = new Main();
+        Main m3 = new Main();
+        Main m4 = new Main();
+
+        String me = m.getMensagem5();
+        String me2 = m2.getMensagem6();
+        String me3 = m3.getMensagem7();
+        String me4 = m4.getMensagem8();
         
-         if (!visible) {
+        if (!visible) {
             return;
         }
-        
-        if (Keyboard.keyPressed[KeyEvent.VK_A]) {
+
+       if (me!=null) {
             desiredDirection = 2;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_D]) {
+        } else if (me2!=null) {
             desiredDirection = 0;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_W]) {
+        } else if (me3!=null) {
             desiredDirection = 3;
-        }
-        else if (Keyboard.keyPressed[KeyEvent.VK_S]) {
+        } else if (me4!=null) {
             desiredDirection = 1;
         }
-        
+
         yield:
         while (true) {
             switch (instructionPointer) {
@@ -389,15 +402,15 @@ public class Ghost extends PacmanActor {
                     dy = (int) Math.sin(angle);
                     if (game.maze[row + dy][col + dx] == 0) {
                         direction = desiredDirection;
-                    } 
-                    
+                    }
+
                     angle = Math.toRadians(direction * 90);
                     dx = (int) Math.cos(angle);
                     dy = (int) Math.sin(angle);
                     if (game.maze[row + dy][col + dx] == -1) {
                         break yield;
-                    } 
-                    
+                    }
+
                     col += dx;
                     row += dy;
                     instructionPointer = 1;
@@ -413,8 +426,7 @@ public class Ghost extends PacmanActor {
                         if (col == 1) {
                             col = 34;
                             x = col * 8 - 4 - 24;
-                        }
-                        else if (col == 34) {
+                        } else if (col == 34) {
                             col = 1;
                             x = col * 8 - 4 - 24;
                         }
@@ -426,8 +438,7 @@ public class Ghost extends PacmanActor {
             }
         }
         updateAnimation();
-        
-        
+
         /*
         desiredDirections.clear();
         if (useTarget) {
@@ -492,7 +503,7 @@ public class Ghost extends PacmanActor {
                     break yield;
             }
         }        
-        */
+         */
     }
 
     @Override
@@ -545,7 +556,7 @@ public class Ghost extends PacmanActor {
             }
         }
     }
-   
+
     private boolean checkCollisionWithPacman() {
         pacman.updateCollider();
         updateCollider();
@@ -556,40 +567,34 @@ public class Ghost extends PacmanActor {
     public void updateCollider() {
         collider.setLocation((int) (x + 4), (int) (y + 4));
     }
-    
+
     private void modeChanged() {
         instructionPointer = 0;
     }
-    
-    // broadcast messages
 
+    // broadcast messages
     @Override
     public void stateChanged() {
         if (game.getState() == PacmanGame.State.TITLE) {
             updateTitle();
             visible = true;
-        }
-        else if (game.getState() == PacmanGame.State.READY) {
+        } else if (game.getState() == PacmanGame.State.READY) {
             visible = false;
-        }
-        else if (game.getState() == PacmanGame.State.READY2) {
+        } else if (game.getState() == PacmanGame.State.READY2) {
             setMode(Mode.CAGE);
             updateAnimation();
             Point initialPosition = initialPositions[type];
             updatePosition(initialPosition.x, initialPosition.y); // col, row
             x -= 4;
-        }
-        else if (game.getState() == PacmanGame.State.PLAYING && mode != Mode.CAGE) {
+        } else if (game.getState() == PacmanGame.State.PLAYING && mode != Mode.CAGE) {
             instructionPointer = 0;
-        }
-        else if (game.getState() == PacmanGame.State.PACMAN_DIED) {
+        } else if (game.getState() == PacmanGame.State.PACMAN_DIED) {
             instructionPointer = 0;
-        }
-        else if (game.getState() == PacmanGame.State.LEVEL_CLEARED) {
+        } else if (game.getState() == PacmanGame.State.LEVEL_CLEARED) {
             instructionPointer = 0;
         }
     }
-    
+
     public void showAll() {
         visible = true;
     }
@@ -597,14 +602,14 @@ public class Ghost extends PacmanActor {
     public void hideAll() {
         visible = false;
     }
-    
+
     public void startGhostVulnerableMode() {
         vulnerableModeStartTime = System.currentTimeMillis();
         markAsVulnerable = true;
     }
-    
+
     public void died() {
         setMode(Mode.DIED);
     }
-        
+
 }
