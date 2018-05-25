@@ -16,7 +16,7 @@ import java.rmi.RemoteException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 
-public class GameClient {
+public class GameClientRmi {
 
     public static void main(String[] args) {
         try {

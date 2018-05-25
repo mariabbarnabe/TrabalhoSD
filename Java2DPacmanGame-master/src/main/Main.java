@@ -7,20 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.rmi.*;
 
-public class Servidor {
-    public Servidor() {
-        try {
-            GameServe g = new GameImpl();
-            Naming.rebind("rmi://localhost:1099/PacmanService", g);
-            System.out.println("Conexão realizada com sucesso!");
-        } catch (Exception e) {
-            System.out.println("Trouble: " + e);
-        }
-    }
+public class Main {
+
     public static void main(String[] args) {
         ///Lembrar de rodar o rmiregistry no caminho classes
-        ///Servidor s = new Servidor();
-        
+        //ServidorRmi s = new ServidorRmi();
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
@@ -39,6 +30,8 @@ public class Servidor {
             }
 
         });
+        ServidorTCP s = new ServidorTCP();
+
     }
-    
+
 }
