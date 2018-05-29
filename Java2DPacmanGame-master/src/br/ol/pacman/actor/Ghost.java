@@ -383,13 +383,13 @@ public class Ghost extends PacmanActor {
             return;
         }
 
-       if (me!=null) {
+       if ("GhostEsquerda".equals(me)) {
             desiredDirection = 2;
-        } else if (me2!=null) {
+        } else if ("GhostDireita".equals(me2)) {
             desiredDirection = 0;
-        } else if (me3!=null) {
+        } else if ("GhostAcima".equals(me3)) {
             desiredDirection = 3;
-        } else if (me4!=null) {
+        } else if ("GhostAbaixo".equals(me4)) {
             desiredDirection = 1;
         }
 

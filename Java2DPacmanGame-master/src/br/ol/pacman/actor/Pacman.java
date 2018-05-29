@@ -130,13 +130,13 @@ Main m4 = new Main();
             return;
         }
 
-        if (me!=null) {
+        if ("PacmanEsquerda".equals(me)) {
             desiredDirection = 2;
-        } else if (me2!=null) {
+        } else if ("PacmanDireita".equals(me2)) {
             desiredDirection = 0;
-        } else if (me3!=null) {
+        } else if ("PacmanAcima".equals(me3)) {
             desiredDirection = 3;
-        } else if (me4!=null) {
+        } else if ("PacmanAbaixo".equals(me4)) {
             desiredDirection = 1;
         }
         

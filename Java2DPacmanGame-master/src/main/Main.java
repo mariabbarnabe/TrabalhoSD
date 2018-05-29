@@ -202,7 +202,7 @@ public class Main {
                     
                     System.out.println(message);
                     
-                    if( (message.equals("Esquerda"))){
+                    if( (message.equals("PacmanEsquerda"))){
                         instancia.setMensagem(message);
                         instancia.setMensagem2(null);
                         instancia.setMensagem3(null);
@@ -215,7 +215,7 @@ public class Main {
                         System.out.println(mensagem1);
                     }
                     
-                    if((message.equals("Direita"))){
+                    if((message.equals("PacmanDireita"))){
                         instancia.setMensagem2(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem3(null);
@@ -228,7 +228,7 @@ public class Main {
                         System.out.println(mensagem2);
                     }
                     
-                    if((message.equals("Acima"))){
+                    if((message.equals("PacmanAcima"))){
                         instancia.setMensagem3(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem2(null);
@@ -241,7 +241,7 @@ public class Main {
                         System.out.println(mensagem3);
                     }
                     
-                    if((message.equals("Abaixo"))){
+                    if((message.equals("PacmanAbaixo"))){
                         instancia.setMensagem4(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem3(null);
@@ -254,7 +254,7 @@ public class Main {
                         System.out.println(mensagem4);
                     }
                     
-                    if((message.equals("A"))){
+                    if((message.equals("GhostEsquerda"))){
                         instancia.setMensagem5(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem3(null);
@@ -266,7 +266,7 @@ public class Main {
                         
                         System.out.println(mensagem5);
                     }
-                    if((message.equals("D"))){
+                    if((message.equals("GhostDireita"))){
                         instancia.setMensagem6(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem3(null);
@@ -278,7 +278,7 @@ public class Main {
                         
                         System.out.println(mensagem6);
                     }
-                    if((message.equals("W"))){
+                    if((message.equals("GhostAcima"))){
                         instancia.setMensagem7(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem3(null);
@@ -290,7 +290,7 @@ public class Main {
                         
                         System.out.println(mensagem4);
                     }
-                    if((message.equals("S"))){
+                    if((message.equals("GhostAbaixo"))){
                         instancia.setMensagem8(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem3(null);

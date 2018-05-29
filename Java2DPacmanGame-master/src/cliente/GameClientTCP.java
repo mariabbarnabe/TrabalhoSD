@@ -2,6 +2,8 @@ package cliente;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -10,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -33,6 +37,12 @@ public class GameClientTCP {
     private static JFrame frame= null;
     private static JLabel labelField = null;
     private static JTextField textField = null;
+    private static JLabel labelField2 = null;
+    private static JComboBox comboBox;
+    private static String str3;
+    private static boolean aux;
+    private static JButton submit;
+    
     private static KeyListener setupKeyBoard() {
         KeyListener listener = new KeyListener() {
 
@@ -57,7 +67,7 @@ public class GameClientTCP {
                 int code = e.getKeyCode();
                 instancia.setStr2(KeyEvent.getKeyText(code));
 
-                instancia.setStrbuf(new StringBuffer(instancia.getStr2()));
+                instancia.setStrbuf(new StringBuffer(instancia.getStr3()+instancia.getStr2()));
 
                 new Thread() {
 
@@ -87,6 +97,22 @@ public class GameClientTCP {
     public void setStr2(String str2) {
         GameClientTCP.str2 = str2;
     }
+    
+    public boolean getAux() {
+        return aux;
+    }
+
+    public void setAux(boolean aux) {
+        GameClientTCP.aux = aux;
+    }
+    
+    public String getStr3() {
+        return str3;
+    }
+
+    public void setStr3(String str3) {
+        GameClientTCP.str3 = str3;
+    }
 
     public StringBuffer getStrbuf() {
         return strbuf;
@@ -113,25 +139,72 @@ public class GameClientTCP {
     }
 
     public static void setupLayout(KeyListener listener) {
-        frame = new JFrame("ClientSide");
+        //frame = new JFrame("ClientSide");
         Container contentPane = frame.getContentPane();
+        contentPane.remove(comboBox);
+        contentPane.remove(submit);
         textField = new JTextField();
-        labelField = new JLabel("Insira um comando válido!");
+        labelField.setText("Insira um comando válido!");
+        contentPane.add(labelField, BorderLayout.NORTH);
         textField.addKeyListener(listener);
         contentPane.add(textField, BorderLayout.SOUTH);
         contentPane.add(labelField,BorderLayout.NORTH);
         frame.pack();
         frame.setVisible(true);
-        frame.setSize(220,64);
+        frame.setSize(300,200);
         frame.isVisible();
         frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
+    
+    public static void setupCharacter() {
+        frame = new JFrame("ClientSide");
+        Container contentPane = frame.getContentPane();
+        instancia.setAux(true);
+        System.out.println(instancia.getAux());
+        labelField = new JLabel("Escolha um personagem: ");
+        contentPane.add(labelField, BorderLayout.NORTH);
+        String[] options = { "Pacman", "Ghost" };
+        comboBox = new JComboBox(options);
+//        comboBox.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                
+//            }
+//        });
+        contentPane.add(comboBox, BorderLayout.CENTER);
+        submit = new JButton("Selecionar Personagem.");
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                instancia.setStr3((String) comboBox.getSelectedItem());
+                comboBox.setEditable(false);
+                submit.setEnabled(false);
+                instancia.setAux(false);
+            }
+        });
+        contentPane.add(submit, BorderLayout.SOUTH);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setSize(300,200);
+        frame.isVisible();
+        frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    }  
 
     public static void main(String[] args) {
+        setupCharacter();
+        System.out.println(instancia.getAux());
+        while(instancia.getAux()){
+            for(float i=0; i<10000; i++){
+                labelField.setText("Esperando Seleção de Personagem!");
+            }
+            for(float i=0; i<10000; i++){
+                labelField.setText("Escolha um personagem: ");
+            }
+        }
         setupLayout(setupKeyBoard());
         try {
             setupClientTCP();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Conexão com servidor falhou.");
             labelField.setText("Conexão com servidor falhou.");
             textField.setEditable(false);
