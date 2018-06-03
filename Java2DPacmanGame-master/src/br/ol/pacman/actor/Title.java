@@ -7,6 +7,7 @@ import br.ol.pacman.PacmanGame.State;
 import br.ol.pacman.infra.Keyboard;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import main.Main;
 
 /**
  * Title class.
@@ -30,6 +31,8 @@ public class Title extends PacmanActor {
     
     @Override
     public void updateTitle() {
+        Main m = new Main();
+        String me = m.getMensagem9();
         yield:
         while (true) {
             switch (instructionPointer) {
@@ -56,9 +59,14 @@ public class Title extends PacmanActor {
                     instructionPointer = 4;
                 case 4:
                     pushSpaceToStartVisible = ((int) (System.nanoTime() * 0.0000000075) % 3) > 0;
+                    if ("PacmanEspaço".equals(me)||"GhostEspaço".equals(me)) {
+                        game.startGame();
+                    }
+                    /*
                     if (Keyboard.keyPressed[KeyEvent.VK_SPACE]) {
                         game.startGame();
                     }
+                    */
                     break yield;
             }
         }
