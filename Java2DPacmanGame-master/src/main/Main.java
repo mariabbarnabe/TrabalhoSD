@@ -34,6 +34,7 @@ public class Main {
     private static String mensagem6;
     private static String mensagem7;
     private static String mensagem8;
+    private static String mensagem9;
 
    
     public String getMensagem1() {
@@ -92,6 +93,14 @@ public class Main {
 
     public void setMensagem4(String mensagem4) {
         Main.mensagem4 = mensagem4;
+    }
+
+    public static String getMensagem9() {
+        return mensagem9;
+    }
+
+    public static void setMensagem9(String mensagem9) {
+        Main.mensagem9 = mensagem9;
     }
     
     
@@ -211,6 +220,7 @@ public class Main {
                         instancia.setMensagem6(null);
                         instancia.setMensagem7(null);
                         instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem1);
                     }
@@ -224,6 +234,7 @@ public class Main {
                         instancia.setMensagem6(null);
                         instancia.setMensagem7(null);
                         instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem2);
                     }
@@ -237,6 +248,7 @@ public class Main {
                         instancia.setMensagem6(null);
                         instancia.setMensagem7(null);
                         instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem3);
                     }
@@ -250,6 +262,7 @@ public class Main {
                         instancia.setMensagem6(null);
                         instancia.setMensagem7(null);
                         instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem4);
                     }
@@ -263,6 +276,7 @@ public class Main {
                         instancia.setMensagem6(null);
                         instancia.setMensagem7(null);
                         instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem5);
                     }
@@ -275,6 +289,7 @@ public class Main {
                         instancia.setMensagem5(null);
                         instancia.setMensagem7(null);
                         instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem6);
                     }
@@ -287,6 +302,7 @@ public class Main {
                         instancia.setMensagem6(null);
                         instancia.setMensagem5(null);
                         instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem4);
                     }
@@ -299,8 +315,22 @@ public class Main {
                         instancia.setMensagem6(null);
                         instancia.setMensagem7(null);
                         instancia.setMensagem5(null);
+                        instancia.setMensagem9(null);
                         
                         System.out.println(mensagem4);
+                    }
+                    if("PacmanEspaço".equals(message)||"GhostEspaço".equals(message)){
+                        instancia.setMensagem9(message);
+                        instancia.setMensagem(null);
+                        instancia.setMensagem3(null);
+                        instancia.setMensagem2(null);
+                        instancia.setMensagem4(null);
+                        instancia.setMensagem6(null);
+                        instancia.setMensagem7(null);
+                        instancia.setMensagem5(null);
+                        instancia.setMensagem8(null);
+                        
+                        System.out.println(mensagem9);
                     }
                     synchronized (os) {
 
