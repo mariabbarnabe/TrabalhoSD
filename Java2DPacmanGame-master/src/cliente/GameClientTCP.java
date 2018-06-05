@@ -34,7 +34,7 @@ public class GameClientTCP {
     private static StringBuffer strbuf;
     private static PrintStream toServer = null;
     private static Socket s = null;
-    private static JFrame frame= null;
+    private static JFrame frame = null;
     private static JLabel labelField = null;
     private static JTextField textField = null;
     private static JLabel labelField2 = null;
@@ -42,7 +42,7 @@ public class GameClientTCP {
     private static String str3;
     private static boolean aux;
     private static JButton submit;
-    
+
     private static KeyListener setupKeyBoard() {
         KeyListener listener = new KeyListener() {
 
@@ -67,7 +67,7 @@ public class GameClientTCP {
                 int code = e.getKeyCode();
                 instancia.setStr2(KeyEvent.getKeyText(code));
 
-                instancia.setStrbuf(new StringBuffer(instancia.getStr3()+instancia.getStr2()));
+                instancia.setStrbuf(new StringBuffer(instancia.getStr3() + instancia.getStr2()));
 
                 new Thread() {
 
@@ -97,7 +97,7 @@ public class GameClientTCP {
     public void setStr2(String str2) {
         GameClientTCP.str2 = str2;
     }
-    
+
     public boolean getAux() {
         return aux;
     }
@@ -105,7 +105,7 @@ public class GameClientTCP {
     public void setAux(boolean aux) {
         GameClientTCP.aux = aux;
     }
-    
+
     public String getStr3() {
         return str3;
     }
@@ -148,14 +148,14 @@ public class GameClientTCP {
         contentPane.add(labelField, BorderLayout.NORTH);
         textField.addKeyListener(listener);
         contentPane.add(textField, BorderLayout.SOUTH);
-        contentPane.add(labelField,BorderLayout.NORTH);
+        contentPane.add(labelField, BorderLayout.NORTH);
         frame.pack();
         frame.setVisible(true);
-        frame.setSize(300,200);
+        frame.setSize(300, 200);
         frame.isVisible();
         frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     }
-    
+
     public static void setupCharacter() {
         frame = new JFrame("ClientSide");
         Container contentPane = frame.getContentPane();
@@ -163,7 +163,7 @@ public class GameClientTCP {
         System.out.println(instancia.getAux());
         labelField = new JLabel("Escolha um personagem: ");
         contentPane.add(labelField, BorderLayout.NORTH);
-        String[] options = { "Pacman", "Ghost" };
+        String[] options = {"Pacman", "Ghost","Ghost1"};
         comboBox = new JComboBox(options);
 //        comboBox.addActionListener(new ActionListener() {
 //            @Override
@@ -185,21 +185,17 @@ public class GameClientTCP {
         contentPane.add(submit, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
-        frame.setSize(300,200);
+        frame.setSize(300, 200);
         frame.isVisible();
         frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    }  
+    }
 
     public static void main(String[] args) {
         setupCharacter();
         System.out.println(instancia.getAux());
-        while(instancia.getAux()){
-            for(float i=0; i<10000; i++){
-                labelField.setText("Esperando Seleção de Personagem!");
-            }
-            for(float i=0; i<10000; i++){
-                labelField.setText("Escolha um personagem: ");
-            }
+        while (instancia.getAux()) {
+
+            labelField.setText("Escolha um personagem: ");
         }
         setupLayout(setupKeyBoard());
         try {

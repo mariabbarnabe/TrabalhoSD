@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Aluisio/Documents/NetBeansProjects/TrabalhoSD/Java2DPacmanGame-master/src/cliente/GameClientTCP.java</file>
-            <file>file:/C:/Users/Aluisio/Documents/NetBeansProjects/TrabalhoSD/Java2DPacmanGame-master/src/main/Main.java</file>
+            <file>file:/home/user/Documentos/trabalhado%20de%20SD/TrabalhoSD/Java2DPacmanGame-master/src/cliente/GameClientTCP.java</file>
+            <file>file:/home/user/Documentos/trabalhado%20de%20SD/TrabalhoSD/Java2DPacmanGame-master/src/main/Main.java</file>
+            <file>file:/home/user/Documentos/trabalhado%20de%20SD/TrabalhoSD/Java2DPacmanGame-master/src/br/ol/pacman/actor/Ghost.java</file>
+            <file>file:/home/user/Documentos/trabalhado%20de%20SD/TrabalhoSD/Java2DPacmanGame-master/src/br/ol/pacman/infra/Game.java</file>
+            <file>file:/home/user/Documentos/trabalhado%20de%20SD/TrabalhoSD/Java2DPacmanGame-master/src/br/ol/pacman/actor/Title.java</file>
+            <file>file:/home/user/Documentos/trabalhado%20de%20SD/TrabalhoSD/Java2DPacmanGame-master/src/br/ol/pacman/actor/Ghost1.java</file>
+            <file>file:/home/user/Documentos/trabalhado%20de%20SD/TrabalhoSD/Java2DPacmanGame-master/src/br/ol/pacman/PacmanGame.java</file>
         </group>
     </open-files>
 </project-private>

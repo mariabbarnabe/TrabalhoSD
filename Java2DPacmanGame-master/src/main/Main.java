@@ -319,7 +319,59 @@ public class Main {
                         
                         System.out.println(mensagem4);
                     }
-                    if("PacmanEspaço".equals(message)||"GhostEspaço".equals(message)){
+                    if((message.equals("Ghost1Esquerda"))){
+                        instancia.setMensagem5(message);
+                        instancia.setMensagem(null);
+                        instancia.setMensagem3(null);
+                        instancia.setMensagem2(null);
+                        instancia.setMensagem4(null);
+                        instancia.setMensagem6(null);
+                        instancia.setMensagem7(null);
+                        instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
+                        
+                        System.out.println(mensagem5);
+                    }
+                    if((message.equals("Ghost1Direita"))){
+                        instancia.setMensagem6(message);
+                        instancia.setMensagem(null);
+                        instancia.setMensagem3(null);
+                        instancia.setMensagem2(null);
+                        instancia.setMensagem4(null);
+                        instancia.setMensagem5(null);
+                        instancia.setMensagem7(null);
+                        instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
+                        
+                        System.out.println(mensagem6);
+                    }
+                    if((message.equals("Ghost1Acima"))){
+                        instancia.setMensagem7(message);
+                        instancia.setMensagem(null);
+                        instancia.setMensagem3(null);
+                        instancia.setMensagem2(null);
+                        instancia.setMensagem4(null);
+                        instancia.setMensagem6(null);
+                        instancia.setMensagem5(null);
+                        instancia.setMensagem8(null);
+                        instancia.setMensagem9(null);
+                        
+                        System.out.println(mensagem4);
+                    }
+                    if((message.equals("Ghost1Abaixo"))){
+                        instancia.setMensagem8(message);
+                        instancia.setMensagem(null);
+                        instancia.setMensagem3(null);
+                        instancia.setMensagem2(null);
+                        instancia.setMensagem4(null);
+                        instancia.setMensagem6(null);
+                        instancia.setMensagem7(null);
+                        instancia.setMensagem5(null);
+                        instancia.setMensagem9(null);
+                        
+                        System.out.println(mensagem4);
+                    }
+                    if("PacmanEspaço".equals(message)||"GhostEspaço".equals(message)||"Ghost1Espaço".equals(message)){
                         instancia.setMensagem9(message);
                         instancia.setMensagem(null);
                         instancia.setMensagem3(null);

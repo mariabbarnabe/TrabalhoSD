@@ -59,7 +59,7 @@ public class Title extends PacmanActor {
                     instructionPointer = 4;
                 case 4:
                     pushSpaceToStartVisible = ((int) (System.nanoTime() * 0.0000000075) % 3) > 0;
-                    if ("PacmanEspaço".equals(me)||"GhostEspaço".equals(me)) {
+                    if ("PacmanEspaço".equals(me)||"GhostEspaço".equals(me)||"Ghost1Espaço".equals(me)) {
                         game.startGame();
                     }
                     /*
